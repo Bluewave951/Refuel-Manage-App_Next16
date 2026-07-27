@@ -1,0 +1,180 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-plex-thai), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.625rem;
+
+  --background: oklch(0.976 0.003 247.9);
+  --foreground: oklch(0.21 0.04 265.8);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.21 0.04 265.8);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.21 0.04 265.8);
+
+  --primary: oklch(0.45 0.21 264.4);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.958 0.008 247.9);
+  --secondary-foreground: oklch(0.28 0.04 265.8);
+
+  --muted: oklch(0.966 0.006 247.9);
+  --muted-foreground: oklch(0.53 0.03 257.4);
+  --accent: oklch(0.955 0.014 254.6);
+  --accent-foreground: oklch(0.35 0.13 264.4);
+
+  --destructive: oklch(0.58 0.22 27.3);
+  --destructive-foreground: oklch(0.985 0 0);
+  --success: oklch(0.56 0.15 152.5);
+  --success-foreground: oklch(0.985 0 0);
+  --warning: oklch(0.72 0.16 63.5);
+  --warning-foreground: oklch(0.2 0.05 63.5);
+
+  --border: oklch(0.918 0.01 247.9);
+  --input: oklch(0.895 0.012 247.9);
+  --ring: oklch(0.55 0.18 264.4);
+}
+
+.dark {
+  --background: oklch(0.19 0.03 265.8);
+  --foreground: oklch(0.965 0.006 247.9);
+  --card: oklch(0.23 0.03 265.8);
+  --card-foreground: oklch(0.965 0.006 247.9);
+  --popover: oklch(0.23 0.03 265.8);
+  --popover-foreground: oklch(0.965 0.006 247.9);
+
+  --primary: oklch(0.72 0.15 258);
+  --primary-foreground: oklch(0.19 0.03 265.8);
+  --secondary: oklch(0.28 0.03 265.8);
+  --secondary-foreground: oklch(0.965 0.006 247.9);
+
+  --muted: oklch(0.28 0.03 265.8);
+  --muted-foreground: oklch(0.7 0.02 257.4);
+  --accent: oklch(0.3 0.04 265.8);
+  --accent-foreground: oklch(0.965 0.006 247.9);
+
+  --destructive: oklch(0.65 0.2 27.3);
+  --destructive-foreground: oklch(0.985 0 0);
+  --success: oklch(0.65 0.15 152.5);
+  --success-foreground: oklch(0.19 0.03 265.8);
+  --warning: oklch(0.78 0.15 63.5);
+  --warning-foreground: oklch(0.19 0.03 265.8);
+
+  --border: oklch(0.32 0.03 265.8);
+  --input: oklch(0.35 0.03 265.8);
+  --ring: oklch(0.6 0.16 258);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-feature-settings: "cv05", "ss01";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ตัวเลขในตาราง/การ์ดสรุปต้องเรียงตรงคอลัมน์ */
+  .tabular {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  :focus-visible {
+    outline: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- โหมดพิมพ์ / print preview ---------- */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 14mm 12mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .print-sheet {
+    box-shadow: none !important;
+    border: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+  }
+
+  table {
+    page-break-inside: auto;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+}
+
+.print-only {
+  display: none;
+}

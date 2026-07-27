@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+ 
+}
+
+/// สถานีบริการน้ำมัน (ปตท., เชลล์, บางจาก, ...)
+model Station {
+  id        String   @id @default(cuid())
+  code      String   @unique // PT, SHELL, BCP
+  nameTh    String
+  nameEn    String
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  refuels Refuel[]
+
+  @@map("stations")
+}
+
+/// รายการเติมน้ำมัน 1 ครั้ง
+model Refuel {
+  id String @id @default(cuid())
+
+  refuelDate DateTime @db.Date // วันที่เติมน้ำมัน
+  stationId  String
+  province   String // จังหวัด (เก็บชื่อไทย)
+
+  pricePerLiter Decimal  @db.Decimal(8, 2) // ราคาเชื้อเพลิง (บาท/ลิตร)
+  amount        Decimal  @db.Decimal(12, 2) // จำนวนเงินที่เติม (บาท)
+  liters        Decimal  @db.Decimal(10, 3) // ปริมาณเติม (ลิตร) = amount / pricePerLiter
+  odometer      Decimal? @db.Decimal(12, 2) // เลขไมล์รถ (กม.)
+  note          String?  @db.VarChar(500)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  station Station @relation(fields: [stationId], references: [id], onDelete: Restrict)
+
+  @@index([refuelDate])
+  @@index([stationId])
+  @@index([province])
+  @@index([odometer])
+  @@map("refuels")
+}
