@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
+import { UnauthorizedError } from "./auth";
 
 export function ok<T>(data: T, init?: ResponseInit) {
   return NextResponse.json(data, init);
@@ -19,6 +20,9 @@ export function serverError(error = "เกิดข้อผิดพลาด�
 
 /** แปลง error ที่ไม่รู้จักให้เป็น response ที่อ่านรู้เรื่อง */
 export function handleError(e: unknown) {
+  if (e instanceof UnauthorizedError) {
+    return NextResponse.json({ error: e.message }, { status: 401 });
+  }
   if (e instanceof ZodError) {
     return badRequest("ข้อมูลที่ส่งมาไม่ถูกต้อง", e.flatten().fieldErrors as Record<string, string[]>);
   }

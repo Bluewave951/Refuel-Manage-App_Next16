@@ -1,11 +1,13 @@
 import { handleError, ok } from "@/lib/api";
 import { prisma } from "@/lib/prisma";
+import { requireUserId } from "@/lib/auth";
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 
 /** GET /api/stations — รายชื่อสถานีบริการที่เปิดใช้งาน */
 export async function GET() {
   try {
+    await requireUserId();
     const stations = await prisma.station.findMany({
       where: { isActive: true },
       orderBy: [{ sortOrder: "asc" }, { nameTh: "asc" }],

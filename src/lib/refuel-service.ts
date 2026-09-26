@@ -30,9 +30,9 @@ export function toRefuelDto(row: RefuelRow): RefuelDto {
   };
 }
 
-export function buildWhere(query: RefuelQuery): Prisma.RefuelWhereInput {
+export function buildWhere(userId: string, query: RefuelQuery): Prisma.RefuelWhereInput {
   const range = resolveDateRange(query);
-  const where: Prisma.RefuelWhereInput = {};
+  const where: Prisma.RefuelWhereInput = { userId };
 
   if (range.gte || range.lte) {
     where.refuelDate = {
@@ -108,8 +108,8 @@ function round(n: number, digits: number) {
 }
 
 /** ดึงรายการ + สรุปยอด (สรุปคิดจาก "ทุกรายการในช่วง" ไม่ใช่เฉพาะหน้าปัจจุบัน) */
-export async function listRefuels(query: RefuelQuery): Promise<RefuelListResponse> {
-  const where = buildWhere(query);
+export async function listRefuels(userId: string, query: RefuelQuery): Promise<RefuelListResponse> {
+  const where = buildWhere(userId, query);
   const rangeLabel = resolveDateRange(query).label;
 
   const [total, pageRows, allRows] = await Promise.all([
@@ -142,8 +142,8 @@ export async function listRefuels(query: RefuelQuery): Promise<RefuelListRespons
 }
 
 /** ดึงทุกแถวในช่วง (ใช้กับ export / print) */
-export async function listAllRefuels(query: RefuelQuery) {
-  const where = buildWhere(query);
+export async function listAllRefuels(userId: string, query: RefuelQuery) {
+  const where = buildWhere(userId, query);
   const rows = await prisma.refuel.findMany({
     where,
     include: { station: true },
@@ -157,9 +157,10 @@ function litersOf(amount: number, pricePerLiter: number) {
   return new Prisma.Decimal((amount / pricePerLiter).toFixed(3));
 }
 
-export async function createRefuel(input: RefuelInput) {
+export async function createRefuel(userId: string, input: RefuelInput) {
   const row = await prisma.refuel.create({
     data: {
+      userId,
       refuelDate: new Date(`${input.refuelDate}T00:00:00.000Z`),
       stationId: input.stationId,
       province: input.province,
@@ -174,8 +175,8 @@ export async function createRefuel(input: RefuelInput) {
   return toRefuelDto(row);
 }
 
-export async function updateRefuel(id: string, input: RefuelUpdate) {
-  const current = await prisma.refuel.findUnique({ where: { id } });
+export async function updateRefuel(userId: string, id: string, input: RefuelUpdate) {
+  const current = await prisma.refuel.findFirst({ where: { id, userId } });
   if (!current) return null;
 
   const amount = input.amount ?? Number(current.amount);
@@ -200,16 +201,12 @@ export async function updateRefuel(id: string, input: RefuelUpdate) {
   return toRefuelDto(row);
 }
 
-export async function deleteRefuel(id: string) {
-  try {
-    await prisma.refuel.delete({ where: { id } });
-    return true;
-  } catch {
-    return false;
-  }
+export async function deleteRefuel(userId: string, id: string) {
+  const { count } = await prisma.refuel.deleteMany({ where: { id, userId } });
+  return count > 0;
 }
 
-export async function getRefuel(id: string) {
-  const row = await prisma.refuel.findUnique({ where: { id }, include: { station: true } });
+export async function getRefuel(userId: string, id: string) {
+  const row = await prisma.refuel.findFirst({ where: { id, userId }, include: { station: true } });
   return row ? toRefuelDto(row) : null;
 }

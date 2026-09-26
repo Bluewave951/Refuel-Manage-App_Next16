@@ -3,14 +3,16 @@ import { handleError, ok, badRequest } from "@/lib/api";
 import { createRefuel, listRefuels } from "@/lib/refuel-service";
 import { parseRefuelQuery, refuelInputSchema } from "@/lib/validations";
 import { prisma } from "@/lib/prisma";
+import { requireUserId } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 /** GET /api/refuels — รายการ + สรุปยอด */
 export async function GET(req: NextRequest) {
   try {
+    const userId = await requireUserId();
     const query = parseRefuelQuery(req.nextUrl.searchParams);
-    return ok(await listRefuels(query));
+    return ok(await listRefuels(userId, query));
   } catch (e) {
     return handleError(e);
   }
@@ -19,13 +21,14 @@ export async function GET(req: NextRequest) {
 /** POST /api/refuels — เพิ่มรายการเติมน้ำมัน */
 export async function POST(req: NextRequest) {
   try {
+    const userId = await requireUserId();
     const body = await req.json();
     const input = refuelInputSchema.parse(body);
 
     const station = await prisma.station.findUnique({ where: { id: input.stationId } });
     if (!station) return badRequest("ไม่พบสถานีบริการที่เลือก");
 
-    return ok(await createRefuel(input), { status: 201 });
+    return ok(await createRefuel(userId, input), { status: 201 });
   } catch (e) {
     return handleError(e);
   }

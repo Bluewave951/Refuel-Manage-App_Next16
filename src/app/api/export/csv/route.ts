@@ -4,14 +4,16 @@ import { listAllRefuels } from "@/lib/refuel-service";
 import { parseRefuelQuery } from "@/lib/validations";
 import { toCsv, UTF8_BOM } from "@/lib/csv";
 import { formatThaiDate } from "@/lib/format";
+import { requireUserId } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 /** GET /api/export/csv — ดาวน์โหลดไฟล์ CSV (เปิดใน Excel ได้เลย) */
 export async function GET(req: NextRequest) {
   try {
+    const userId = await requireUserId();
     const query = parseRefuelQuery(req.nextUrl.searchParams);
-    const { items, summary } = await listAllRefuels({ ...query, pageSize: 500 });
+    const { items, summary } = await listAllRefuels(userId, { ...query, pageSize: 500 });
 
     const headers = [
       "วันที่",
@@ -40,7 +42,7 @@ export async function GET(req: NextRequest) {
     // ต่อท้ายด้วยบรรทัดสรุป
     rows.push([]);
     rows.push(["สรุป", summary.rangeLabel]);
-    rows.push(["จำนวนครั้งการเติม", summary.count]);
+    rows.push(["จำนวนครั้งการเติม", String(summary.count)]);
     rows.push(["ปริมาณรวมทั้งหมด (ลิตร)", summary.totalLiters.toFixed(2)]);
     rows.push(["ค่าใช้จ่ายรวม (บาท)", summary.totalAmount.toFixed(2)]);
     rows.push(["ระยะทางที่วิ่งได้ (กม.)", summary.totalDistance.toFixed(2)]);

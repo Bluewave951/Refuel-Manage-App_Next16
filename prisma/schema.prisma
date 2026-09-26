@@ -29,6 +29,8 @@ model Station {
 model Refuel {
   id String @id @default(cuid())
 
+  userId String? @db.Uuid // เจ้าของรายการ (Supabase auth.users.id)
+
   refuelDate DateTime @db.Date // วันที่เติมน้ำมัน
   stationId  String
   province   String // จังหวัด (เก็บชื่อไทย)
@@ -44,6 +46,7 @@ model Refuel {
 
   station Station @relation(fields: [stationId], references: [id], onDelete: Restrict)
 
+  @@index([userId, refuelDate])
   @@index([refuelDate])
   @@index([stationId])
   @@index([province])

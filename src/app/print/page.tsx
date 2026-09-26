@@ -3,6 +3,7 @@ import { listAllRefuels } from "@/lib/refuel-service";
 import { refuelQuerySchema } from "@/lib/validations";
 import { formatNumber, formatThaiDate } from "@/lib/format";
 import { AutoPrint, PrintButton } from "@/components/auto-print";
+import { requireUserId } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -16,7 +17,8 @@ export default async function PrintPage({ searchParams }: { searchParams: Search
     Object.entries(sp).map(([k, v]) => [k, Array.isArray(v) ? v[0] : v])
   );
   const query = refuelQuerySchema.parse(flat);
-  const { items, summary } = await listAllRefuels(query);
+  const userId = await requireUserId();
+  const { items, summary } = await listAllRefuels(userId, query);
 
   const printedAt = new Intl.DateTimeFormat("th-TH", {
     dateStyle: "long",

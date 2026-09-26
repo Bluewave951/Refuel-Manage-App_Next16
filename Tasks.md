@@ -27,9 +27,13 @@
 
 ## Phase 2 — ความปลอดภัย
 
-- [ ] เพิ่มระบบล็อกอิน (เช่น Supabase Auth หรือ Auth.js)
-- [ ] ป้องกันทุก route ใต้ `/api/*` และหน้า `/`, `/print`
-- [ ] (ถ้ามีหลายผู้ใช้) เพิ่ม `userId` ใน `Refuel` และกรองข้อมูลตามผู้ใช้
+- [x] เพิ่มระบบล็อกอินด้วย Supabase Auth (อีเมล + รหัสผ่าน, หน้า `/login`, ปุ่มออกจากระบบ)
+- [x] ป้องกันทุก route ใต้ `/api/*` และหน้า `/`, `/print` (`src/proxy.ts` + `requireUserId()`)
+- [x] เพิ่ม `userId` ใน `Refuel` (migration `1_add_user_id`) และกรองข้อมูลตามผู้ใช้ทุก query
+- [ ] ปิด "Allow new users to sign up" ใน Supabase Dashboard > Authentication > Sign In / Providers
+- [ ] สร้างผู้ใช้ (ไม่เกิน 10 คน) ใน Dashboard > Authentication > Users > Add user
+- [ ] รายการตัวอย่าง 3 รายการจาก seed ยังไม่มีเจ้าของ (มองไม่เห็นในแอป) — กำหนดเจ้าของหรือลบทิ้ง แล้วตั้ง `userId` เป็น NOT NULL
+- [ ] รัน `pnpm prisma migrate resolve --applied 1_add_user_id`
 - [ ] Rate limit สำหรับ POST/PATCH/DELETE
 
 ## Phase 3 — คุณภาพโค้ดและการทดสอบ

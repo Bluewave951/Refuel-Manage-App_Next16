@@ -8,7 +8,7 @@
 - สรุปยอดตามช่วงเวลา / สถานี / จังหวัด: ค่าใช้จ่ายรวม ลิตรรวม ระยะทาง อัตราสิ้นเปลือง ค่าใช้จ่ายต่อกม.
 - ส่งออกรายงานเป็น PDF (ผ่านหน้าพิมพ์ของเบราว์เซอร์) และ CSV (รองรับภาษาไทยใน Excel)
 
-**นอกขอบเขต (ปัจจุบัน):** ระบบผู้ใช้/ล็อกอิน, หลายคันรถ, แอปมือถือ
+**นอกขอบเขต (ปัจจุบัน):** การสมัครสมาชิกด้วยตนเอง, หลายคันรถ, แอปมือถือ
 
 ## 2. สถาปัตยกรรม
 
@@ -79,7 +79,11 @@ Error format: `{ error: string, details?: Record<string, string[]> }`
 - zod `.strict()` ปฏิเสธฟิลด์แปลกปลอม, จังหวัดต้องอยู่ใน 77 จังหวัด
 - CSV ใส่ BOM และ escape ค่าที่ขึ้นต้นด้วย `= + - @` (กัน formula injection)
 - ตรวจว่า stationId มีอยู่จริงก่อนบันทึก
-- **ยังไม่มี authentication** — ห้ามเปิดสู่สาธารณะจนกว่าจะเพิ่ม (ดู Tasks.md)
+- **Authentication: Supabase Auth** (อีเมล + รหัสผ่าน) สำหรับผู้ใช้ไม่เกิน 10 คน
+  - ผู้ดูแลสร้างบัญชีใน Supabase Dashboard เท่านั้น (ปิดการสมัครเอง)
+  - `src/proxy.ts` refresh session ทุก request — ยังไม่ล็อกอิน: หน้าเว็บ redirect ไป `/login`, `/api/*` ตอบ 401
+  - ทุก Route Handler / Server Component เรียก `requireUserId()` ซ้ำอีกชั้น (defense in depth)
+  - ข้อมูลแยกตามผู้ใช้: `refuels.userId` = `auth.users.id` ทุก query กรองด้วย `userId`; `stations` ใช้ร่วมกัน
 
 ## 8. การ deploy
 
