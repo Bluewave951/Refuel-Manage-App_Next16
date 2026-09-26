@@ -4,6 +4,7 @@ import { deleteRefuel, getRefuel, updateRefuel, validateOdometer } from "@/lib/r
 import { refuelUpdateSchema } from "@/lib/validations";
 import { requireUserId } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { limitMutations } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +26,7 @@ export async function GET(_req: NextRequest, { params }: Ctx) {
 export async function PATCH(req: NextRequest, { params }: Ctx) {
   try {
     const userId = await requireUserId();
+    limitMutations(userId);
     const { id } = await params;
     const input = refuelUpdateSchema.parse(await req.json());
     if (input.stationId) {
@@ -53,6 +55,7 @@ export async function PATCH(req: NextRequest, { params }: Ctx) {
 export async function DELETE(_req: NextRequest, { params }: Ctx) {
   try {
     const userId = await requireUserId();
+    limitMutations(userId);
     const { id } = await params;
     const deleted = await deleteRefuel(userId, id);
     return deleted ? ok({ id, deleted: true }) : notFound();

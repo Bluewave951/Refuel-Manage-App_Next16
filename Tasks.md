@@ -34,7 +34,7 @@
 - [x] สร้างผู้ใช้ (ไม่เกิน 10 คน) ใน Dashboard > Authentication > Users > Add user
 - [x] โอนรายการตัวอย่าง 3 รายการให้ผู้ใช้คนแรก และตั้ง `userId` เป็น NOT NULL (migration `2_user_id_required`)
 - [x] รัน `pnpm prisma migrate resolve --applied 1_add_user_id`
-- [ ] Rate limit สำหรับ POST/PATCH/DELETE
+- [x] Rate limit สำหรับ POST/PATCH/DELETE (30 ครั้ง/นาที/ผู้ใช้, in-memory — ถ้าต้องเข้มงวดข้าม instance ให้ย้ายไป Upstash Redis)
 
 ## Phase 3 — คุณภาพโค้ดและการทดสอบ
 

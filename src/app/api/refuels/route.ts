@@ -4,6 +4,7 @@ import { createRefuel, listRefuels, validateOdometer } from "@/lib/refuel-servic
 import { parseRefuelQuery, refuelInputSchema } from "@/lib/validations";
 import { prisma } from "@/lib/prisma";
 import { requireUserId } from "@/lib/auth";
+import { limitMutations } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
@@ -22,6 +23,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const userId = await requireUserId();
+    limitMutations(userId);
     const body = await req.json();
     const input = refuelInputSchema.parse(body);
 

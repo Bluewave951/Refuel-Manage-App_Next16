@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { UnauthorizedError } from "./auth";
+import { RateLimitError } from "./rate-limit";
 
 export function ok<T>(data: T, init?: ResponseInit) {
   return NextResponse.json(data, init);
@@ -22,6 +23,12 @@ export function serverError(error = "เกิดข้อผิดพลาด�
 export function handleError(e: unknown) {
   if (e instanceof UnauthorizedError) {
     return NextResponse.json({ error: e.message }, { status: 401 });
+  }
+  if (e instanceof RateLimitError) {
+    return NextResponse.json(
+      { error: e.message },
+      { status: 429, headers: { "Retry-After": String(e.retryAfterSec) } }
+    );
   }
   if (e instanceof ZodError) {
     return badRequest("ข้อมูลที่ส่งมาไม่ถูกต้อง", e.flatten().fieldErrors as Record<string, string[]>);
