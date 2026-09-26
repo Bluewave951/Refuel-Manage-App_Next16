@@ -124,7 +124,7 @@ export function RefuelDashboard() {
             className={cn(
               "flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition",
               tab === t.id
-                ? "hero-gradient text-white shadow-md"
+                ? "hero-gradient shadow-md"
                 : "text-muted-foreground hover:bg-accent hover:text-foreground"
             )}
           >
@@ -226,7 +226,7 @@ export function RefuelDashboard() {
               >
                 <span
                   className={cn(
-                    "hero-gradient -mt-6 grid size-12 place-items-center rounded-full text-white shadow-lg ring-4 ring-card transition",
+                    "hero-gradient -mt-6 grid size-12 place-items-center rounded-full shadow-lg ring-4 ring-card transition",
                     tab === t.id ? "scale-105" : "opacity-95"
                   )}
                 >

@@ -46,22 +46,23 @@
 :root {
   --radius: 0.625rem;
 
-  --background: oklch(0.976 0.003 247.9);
-  --foreground: oklch(0.21 0.04 265.8);
+  /* ธีม ฟ้า → เขียว → เหลือง */
+  --background: oklch(0.982 0.012 175);
+  --foreground: oklch(0.24 0.045 225);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.21 0.04 265.8);
+  --card-foreground: oklch(0.24 0.045 225);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.21 0.04 265.8);
+  --popover-foreground: oklch(0.24 0.045 225);
 
-  --primary: oklch(0.45 0.21 264.4);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.958 0.008 247.9);
-  --secondary-foreground: oklch(0.28 0.04 265.8);
+  --primary: oklch(0.52 0.11 218);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.96 0.02 180);
+  --secondary-foreground: oklch(0.28 0.05 220);
 
-  --muted: oklch(0.966 0.006 247.9);
-  --muted-foreground: oklch(0.53 0.03 257.4);
-  --accent: oklch(0.955 0.014 254.6);
-  --accent-foreground: oklch(0.35 0.13 264.4);
+  --muted: oklch(0.965 0.012 180);
+  --muted-foreground: oklch(0.5 0.035 220);
+  --accent: oklch(0.955 0.035 185);
+  --accent-foreground: oklch(0.34 0.08 220);
 
   --destructive: oklch(0.58 0.22 27.3);
   --destructive-foreground: oklch(0.985 0 0);
@@ -70,68 +71,72 @@
   --warning: oklch(0.72 0.16 63.5);
   --warning-foreground: oklch(0.2 0.05 63.5);
 
-  --border: oklch(0.918 0.01 247.9);
-  --input: oklch(0.895 0.012 247.9);
-  --ring: oklch(0.55 0.18 264.4);
+  --border: oklch(0.915 0.02 185);
+  --input: oklch(0.89 0.025 190);
+  --ring: oklch(0.6 0.12 215);
 
-  /* สีประจำการ์ดสรุป / จุดเด่น */
-  --tone-blue: oklch(0.55 0.2 262);
-  --tone-cyan: oklch(0.6 0.12 215);
-  --tone-green: oklch(0.58 0.15 155);
-  --tone-amber: oklch(0.68 0.16 60);
-  --tone-violet: oklch(0.55 0.2 295);
+  /* สีประจำการ์ดสรุป */
+  --tone-blue: oklch(0.58 0.14 235);
+  --tone-cyan: oklch(0.66 0.12 205);
+  --tone-green: oklch(0.62 0.15 150);
+  --tone-amber: oklch(0.72 0.15 75);
+  --tone-violet: oklch(0.66 0.17 125);
   --tone-rose: oklch(0.6 0.2 12);
 
-  --hero-from: oklch(0.47 0.22 265);
-  --hero-via: oklch(0.5 0.22 290);
-  --hero-to: oklch(0.62 0.15 220);
-  --blob-1: oklch(0.85 0.1 265 / 0.55);
-  --blob-2: oklch(0.88 0.1 190 / 0.5);
-  --blob-3: oklch(0.9 0.09 330 / 0.4);
+  /* gradient หลัก: #0EC9F5 → #7EE08A → #F9FB24 */
+  --hero-from: oklch(0.78 0.14 225);
+  --hero-via: oklch(0.84 0.14 147);
+  --hero-to: oklch(0.95 0.2 110);
+  /* ตัวอักษรบน gradient สว่าง ต้องเป็นสีเข้ม */
+  --hero-ink: oklch(0.26 0.06 225);
+  --blob-1: oklch(0.85 0.1 220 / 0.5);
+  --blob-2: oklch(0.9 0.12 140 / 0.45);
+  --blob-3: oklch(0.95 0.15 108 / 0.5);
 }
 
 .dark {
-  --background: oklch(0.19 0.03 265.8);
-  --foreground: oklch(0.965 0.006 247.9);
-  --card: oklch(0.23 0.03 265.8);
-  --card-foreground: oklch(0.965 0.006 247.9);
-  --popover: oklch(0.23 0.03 265.8);
-  --popover-foreground: oklch(0.965 0.006 247.9);
+  --background: oklch(0.2 0.03 220);
+  --foreground: oklch(0.965 0.01 180);
+  --card: oklch(0.24 0.03 220);
+  --card-foreground: oklch(0.965 0.01 180);
+  --popover: oklch(0.24 0.03 220);
+  --popover-foreground: oklch(0.965 0.01 180);
 
-  --primary: oklch(0.72 0.15 258);
-  --primary-foreground: oklch(0.19 0.03 265.8);
-  --secondary: oklch(0.28 0.03 265.8);
-  --secondary-foreground: oklch(0.965 0.006 247.9);
+  --primary: oklch(0.8 0.12 205);
+  --primary-foreground: oklch(0.2 0.03 220);
+  --secondary: oklch(0.29 0.03 215);
+  --secondary-foreground: oklch(0.965 0.01 180);
 
-  --muted: oklch(0.28 0.03 265.8);
-  --muted-foreground: oklch(0.7 0.02 257.4);
-  --accent: oklch(0.3 0.04 265.8);
-  --accent-foreground: oklch(0.965 0.006 247.9);
+  --muted: oklch(0.29 0.03 215);
+  --muted-foreground: oklch(0.72 0.03 200);
+  --accent: oklch(0.31 0.04 200);
+  --accent-foreground: oklch(0.965 0.01 180);
 
   --destructive: oklch(0.65 0.2 27.3);
   --destructive-foreground: oklch(0.985 0 0);
-  --success: oklch(0.65 0.15 152.5);
-  --success-foreground: oklch(0.19 0.03 265.8);
+  --success: oklch(0.68 0.15 152.5);
+  --success-foreground: oklch(0.2 0.03 220);
   --warning: oklch(0.78 0.15 63.5);
-  --warning-foreground: oklch(0.19 0.03 265.8);
+  --warning-foreground: oklch(0.2 0.03 220);
 
-  --border: oklch(0.32 0.03 265.8);
-  --input: oklch(0.35 0.03 265.8);
-  --ring: oklch(0.6 0.16 258);
+  --border: oklch(0.33 0.03 210);
+  --input: oklch(0.36 0.03 210);
+  --ring: oklch(0.7 0.12 205);
 
-  --tone-blue: oklch(0.72 0.15 262);
-  --tone-cyan: oklch(0.76 0.11 215);
-  --tone-green: oklch(0.74 0.14 155);
-  --tone-amber: oklch(0.8 0.14 70);
-  --tone-violet: oklch(0.74 0.15 295);
+  --tone-blue: oklch(0.74 0.12 235);
+  --tone-cyan: oklch(0.8 0.11 205);
+  --tone-green: oklch(0.78 0.14 150);
+  --tone-amber: oklch(0.84 0.13 80);
+  --tone-violet: oklch(0.84 0.16 125);
   --tone-rose: oklch(0.72 0.17 12);
 
-  --hero-from: oklch(0.36 0.16 265);
-  --hero-via: oklch(0.38 0.16 290);
-  --hero-to: oklch(0.42 0.12 220);
-  --blob-1: oklch(0.4 0.15 265 / 0.35);
-  --blob-2: oklch(0.42 0.1 200 / 0.3);
-  --blob-3: oklch(0.4 0.14 320 / 0.25);
+  --hero-from: oklch(0.5 0.1 225);
+  --hero-via: oklch(0.55 0.11 150);
+  --hero-to: oklch(0.62 0.12 112);
+  --hero-ink: oklch(0.98 0.01 150);
+  --blob-1: oklch(0.42 0.09 220 / 0.35);
+  --blob-2: oklch(0.45 0.1 150 / 0.25);
+  --blob-3: oklch(0.5 0.1 110 / 0.2);
 }
 
 @layer base {
@@ -157,7 +162,8 @@
   }
 
   .hero-gradient {
-    background-image: linear-gradient(120deg, var(--hero-from), var(--hero-via) 55%, var(--hero-to));
+    background-image: linear-gradient(110deg, var(--hero-from), var(--hero-via) 50%, var(--hero-to));
+    color: var(--hero-ink);
   }
 
   /* ตัวเลขในตาราง/การ์ดสรุปต้องเรียงตรงคอลัมน์ */

@@ -5,10 +5,10 @@ export async function AppHeader() {
   const email = await getUserEmail();
 
   return (
-    <header className="no-print hero-gradient relative overflow-hidden text-white">
+    <header className="no-print hero-gradient relative overflow-hidden">
       {/* ลวดลายวงกลมตกแต่ง */}
       <div aria-hidden className="pointer-events-none absolute -right-16 -top-20 size-64 rounded-full bg-white/10 blur-2xl" />
-      <div aria-hidden className="pointer-events-none absolute -bottom-24 left-10 size-56 rounded-full bg-cyan-300/20 blur-2xl" />
+      <div aria-hidden className="pointer-events-none absolute -bottom-24 left-10 size-56 rounded-full bg-yellow-200/40 blur-2xl" />
 
       <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 pb-16 pt-5 sm:pb-20 sm:pt-7">
         <div className="flex min-w-0 items-center gap-3">
@@ -17,13 +17,13 @@ export async function AppHeader() {
           </span>
           <div className="min-w-0">
             <h1 className="truncate text-lg font-bold tracking-tight sm:text-2xl">Refuel Manage App</h1>
-            <p className="truncate text-xs text-white/80 sm:text-sm">บันทึกค่าใช้จ่ายในการเติมน้ำมัน</p>
+            <p className="truncate text-xs text-(--hero-ink)/80 sm:text-sm">บันทึกค่าใช้จ่ายในการเติมน้ำมัน</p>
           </div>
         </div>
 
         {email && (
           <form action="/auth/signout" method="post" className="flex shrink-0 items-center gap-2">
-            <span className="hidden max-w-48 truncate text-xs text-white/85 md:inline">{email}</span>
+            <span className="hidden max-w-48 truncate text-xs text-(--hero-ink)/85 md:inline">{email}</span>
             <button
               type="submit"
               title="ออกจากระบบ"

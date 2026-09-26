@@ -41,16 +41,16 @@ export function SummaryCards({ summary, className }: Props) {
   return (
     <div className={cn("grid grid-cols-2 gap-3 lg:grid-cols-6", className)}>
       {/* การ์ดเด่น: ค่าใช้จ่ายรวม */}
-      <div className="hero-gradient relative col-span-2 overflow-hidden rounded-2xl p-4 text-white shadow-lg shadow-primary/20 sm:p-5">
+      <div className="hero-gradient relative col-span-2 overflow-hidden rounded-2xl p-4 shadow-lg shadow-primary/20 sm:p-5">
         <div aria-hidden className="absolute -right-6 -top-6 size-28 rounded-full bg-white/15 blur-xl" />
-        <div className="relative flex items-center gap-2 text-white/85">
+        <div className="relative flex items-center gap-2 text-(--hero-ink)/85">
           <span className="grid size-8 place-items-center rounded-lg bg-white/20">
             <hero.icon className="size-4" />
           </span>
           <span className="text-sm font-medium">{hero.label}</span>
         </div>
         <p className="tabular relative mt-3 text-3xl font-bold leading-none sm:text-4xl">{hero.value}</p>
-        <p className="relative mt-1.5 text-xs text-white/80">
+        <p className="relative mt-1.5 text-xs text-(--hero-ink)/80">
           {hero.unit} · {summary.rangeLabel}
         </p>
       </div>

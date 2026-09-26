@@ -101,7 +101,7 @@ export function RefuelForm({ stations, editing, onSaved, onCancelEdit }: Props) 
     <Card className="no-print overflow-hidden bg-card/90 backdrop-blur">
       <CardHeader className="border-b border-border/60 bg-gradient-to-r from-primary/10 via-transparent to-transparent">
         <CardTitle className="flex items-center gap-2.5">
-          <span className="hero-gradient grid size-8 place-items-center rounded-lg text-white shadow">
+          <span className="hero-gradient grid size-8 place-items-center rounded-lg shadow">
             <Fuel className="size-4" />
           </span>
           {isEdit ? "แก้ไขรายการเติมน้ำมัน" : "เพิ่มรายการเติมน้ำมัน"}
