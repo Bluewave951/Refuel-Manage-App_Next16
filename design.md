@@ -88,6 +88,6 @@ Error format: `{ error: string, details?: Record<string, string[]> }`
 
 ## 9. ข้อสังเกต / การตัดสินใจที่ค้างอยู่
 
-- **ตัดสินใจแล้ว (2026-09-26):** ใช้ **TypeScript (strict)** ทั้งโปรเจกต์ เป็นข้อยกเว้นจากกฎ JavaScript ใน AGENTS.md — ไฟล์ config `eslint.config.mjs`, `postcss.config.mjs` คงไว้ตามมาตรฐานของเครื่องมือ
+- **ตัดสินใจแล้ว (2026-09-26):** ใช้ **TypeScript (strict)** ทั้งโปรเจกต์ ตรงตามกฎใน AGENTS.md — ไฟล์ config `eslint.config.mjs`, `postcss.config.mjs` คงไว้ตามมาตรฐานของเครื่องมือ
 - `schema.prisma` ยังไม่ได้ผูก `directUrl = env("DIRECT_URL")` แม้ `.env.example` มีตัวแปรนี้
 - ยังไม่มีชุดทดสอบอัตโนมัติ
