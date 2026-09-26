@@ -30,7 +30,7 @@
 - [x] เพิ่มระบบล็อกอินด้วย Supabase Auth (อีเมล + รหัสผ่าน, หน้า `/login`, ปุ่มออกจากระบบ)
 - [x] ป้องกันทุก route ใต้ `/api/*` และหน้า `/`, `/print` (`src/proxy.ts` + `requireUserId()`)
 - [x] เพิ่ม `userId` ใน `Refuel` (migration `1_add_user_id`) และกรองข้อมูลตามผู้ใช้ทุก query
-- [ ] ปิด "Allow new users to sign up" ใน Supabase Dashboard > Authentication > Sign In / Providers
+- [x] ปิด "Allow new users to sign up" ใน Supabase Dashboard > Authentication > Sign In / Providers
 - [x] สร้างผู้ใช้ (ไม่เกิน 10 คน) ใน Dashboard > Authentication > Users > Add user
 - [x] โอนรายการตัวอย่าง 3 รายการให้ผู้ใช้คนแรก และตั้ง `userId` เป็น NOT NULL (migration `2_user_id_required`)
 - [x] รัน `pnpm prisma migrate resolve --applied 1_add_user_id`
