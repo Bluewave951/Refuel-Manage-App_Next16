@@ -8,6 +8,7 @@ import { RefuelTable } from "@/components/refuel-table";
 import { SummaryCards, SummaryFootnotes } from "@/components/summary-cards";
 import { FilterBar, type Filters } from "@/components/filter-bar";
 import { ExportActions } from "@/components/export-actions";
+import { MonthlyTrend } from "@/components/monthly-trend";
 import { useRefuels, useStations } from "@/hooks/use-refuels";
 import type { RefuelDto } from "@/types/refuel";
 
@@ -81,6 +82,7 @@ export function RefuelDashboard() {
             <>
               <SummaryCards summary={data.summary} />
               <SummaryFootnotes summary={data.summary} />
+              <MonthlyTrend data={data.monthly} />
             </>
           )}
 

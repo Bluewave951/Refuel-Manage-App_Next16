@@ -2,7 +2,7 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "./prisma";
 import { resolveDateRange } from "./date-range";
 import type { RefuelQuery, RefuelInput, RefuelUpdate } from "./validations";
-import type { RefuelDto, RefuelListResponse, RefuelSummary } from "@/types/refuel";
+import type { MonthlyPoint, RefuelDto, RefuelListResponse, RefuelSummary } from "@/types/refuel";
 
 const refuelWithStation = Prisma.validator<Prisma.RefuelDefaultArgs>()({
   include: { station: true },
@@ -102,6 +102,39 @@ export function calculateSummary(rows: RefuelDto[], rangeLabel: string): RefuelS
   };
 }
 
+/** รวมยอดรายเดือน เรียงจากเก่าไปใหม่ และเติมเดือนที่ไม่มีรายการเป็น 0 ให้แกนเวลาต่อเนื่อง */
+export function monthlyTrend(rows: RefuelDto[]): MonthlyPoint[] {
+  if (rows.length === 0) return [];
+
+  const byMonth = new Map<string, { count: number; amount: number; liters: number }>();
+  for (const r of rows) {
+    const key = r.refuelDate.slice(0, 7);
+    const m = byMonth.get(key) ?? { count: 0, amount: 0, liters: 0 };
+    m.count += 1;
+    m.amount += r.amount;
+    m.liters += r.liters;
+    byMonth.set(key, m);
+  }
+
+  const keys = [...byMonth.keys()].sort();
+  const [fy, fm] = keys[0].split("-").map(Number);
+  const [ly, lm] = keys[keys.length - 1].split("-").map(Number);
+
+  const out: MonthlyPoint[] = [];
+  for (let y = fy, mo = fm; y < ly || (y === ly && mo <= lm); mo === 12 ? (y++, (mo = 1)) : mo++) {
+    const month = `${y}-${String(mo).padStart(2, "0")}`;
+    const m = byMonth.get(month);
+    out.push({
+      month,
+      count: m?.count ?? 0,
+      totalAmount: round(m?.amount ?? 0, 2),
+      totalLiters: round(m?.liters ?? 0, 3),
+      avgPricePerLiter: m && m.liters > 0 ? round(m.amount / m.liters, 2) : null,
+    });
+  }
+  return out;
+}
+
 function round(n: number, digits: number) {
   const f = 10 ** digits;
   return Math.round((n + Number.EPSILON) * f) / f;
@@ -129,11 +162,12 @@ export async function listRefuels(userId: string, query: RefuelQuery): Promise<R
   ]);
 
   const items = pageRows.map(toRefuelDto);
-  const summary = calculateSummary(allRows.map(toRefuelDto), rangeLabel);
+  const all = allRows.map(toRefuelDto);
 
   return {
     items,
-    summary,
+    summary: calculateSummary(all, rangeLabel),
+    monthly: monthlyTrend(all),
     page: query.page,
     pageSize: query.pageSize,
     total,

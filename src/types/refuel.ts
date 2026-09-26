@@ -35,9 +35,21 @@ export interface RefuelSummary {
   rangeLabel: string;
 }
 
+/** ยอดรวมรายเดือน (ใช้กับกราฟแนวโน้ม) */
+export interface MonthlyPoint {
+  /** YYYY-MM */
+  month: string;
+  count: number;
+  totalAmount: number;
+  totalLiters: number;
+  /** ราคาเฉลี่ยถ่วงน้ำหนัก = เงินรวม ÷ ลิตรรวม */
+  avgPricePerLiter: number | null;
+}
+
 export interface RefuelListResponse {
   items: RefuelDto[];
   summary: RefuelSummary;
+  monthly: MonthlyPoint[];
   page: number;
   pageSize: number;
   total: number;
