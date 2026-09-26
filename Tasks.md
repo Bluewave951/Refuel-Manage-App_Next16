@@ -39,10 +39,10 @@
 ## Phase 3 — คุณภาพโค้ดและการทดสอบ
 
 - [x] ตัดสินใจเรื่องภาษา: ใช้ TypeScript ทั้งโปรเจกต์ (โค้ดเป็น TS อยู่แล้ว)
-- [ ] Unit test สูตรคำนวณใน `refuel-service.ts` (โดยเฉพาะ full-tank method, กรณีเลขไมล์ < 2 ครั้ง)
-- [ ] Unit test `date-range.ts`, `csv.ts`, `validations.ts`
+- [x] Unit test สูตรคำนวณใน `refuel-service.ts` (โดยเฉพาะ full-tank method, กรณีเลขไมล์ < 2 ครั้ง)
+- [x] Unit test `date-range.ts`, `csv.ts`, `validations.ts`
 - [ ] Integration test ของ API routes
-- [ ] ตั้ง CI: lint + typecheck + test + build
+- [x] ตั้ง CI: lint + typecheck + test + build (`.github/workflows/ci.yml`, vitest, ESLint flat config)
 
 ## Phase 4 — ฟีเจอร์เพิ่มเติม (ตัวเลือก)
 
@@ -56,5 +56,5 @@
 ## Phase 5 — Deploy
 
 - [ ] Deploy บน Vercel (ตั้ง env ให้ครบ)
-- [ ] ตรวจ build `prisma generate && next build` ผ่านบน CI
+- [x] ตรวจ build `prisma generate && next build` ผ่านบน CI
 - [ ] Backup ฐานข้อมูลอัตโนมัติ
