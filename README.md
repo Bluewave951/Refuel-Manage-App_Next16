@@ -8,7 +8,9 @@
 |---|---|
 | Framework | Next.js 16 (App Router, Server Components) |
 | ภาษา | TypeScript (strict) |
-| ฐานข้อมูล | PostgreSQL + Prisma ORM |
+| ฐานข้อมูล | PostgreSQL (Supabase) + Prisma ORM |
+| Auth | Supabase Auth (อีเมล + รหัสผ่าน, ข้อมูลแยกตามผู้ใช้) |
+| Test / CI | Vitest + GitHub Actions (lint, typecheck, test, build) |
 | UI | Tailwind CSS v4 + shadcn/ui + lucide-react |
 | ฟอร์ม | react-hook-form + zod |
 | Data fetching | SWR |
@@ -35,6 +37,27 @@ pnpm dev                      # http://localhost:3000
 pnpm db:migrate               # สร้าง migration ไฟล์ (แนะนำสำหรับ production)
 pnpm build && pnpm start
 ```
+
+## Deploy (Vercel + Supabase)
+
+1. **Supabase** — ฐานข้อมูลอยู่บน Supabase แล้ว (migration ใน `prisma/migrations`)
+   - Authentication > Sign In / Providers: ปิด **Allow new users to sign up**
+   - Authentication > URL Configuration: ตั้ง **Site URL** เป็นโดเมนของ Vercel
+   - สร้างผู้ใช้ที่ Authentication > Users > Add user
+2. **Vercel** — Import repo นี้จาก GitHub (Framework: Next.js, build command ใช้ของ `package.json`)
+3. ใส่ Environment Variables (Production + Preview):
+
+   | ชื่อ | ค่า |
+   |---|---|
+   | `DATABASE_URL` | Transaction pooler (port 6543) + `?pgbouncer=true&connection_limit=1` |
+   | `DIRECT_URL` | Session pooler (port 5432) |
+   | `NEXT_PUBLIC_SUPABASE_URL` | `https://<project-ref>.supabase.co` |
+   | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | `sb_publishable_...` |
+
+   > รหัสผ่านที่มีอักขระพิเศษ (`@ # / ? : %` ฯลฯ) ต้อง URL-encode ก่อนใส่ใน connection string และห้ามมี `[ ]` จากตัวอย่างค้างอยู่
+4. Migration ใหม่ในอนาคต: รัน `pnpm prisma migrate deploy` (ใช้ `DIRECT_URL`) ก่อน deploy โค้ดที่ต้องใช้ schema ใหม่
+
+> เครื่องที่มี pnpm เวอร์ชันเก่า: ใช้ `corepack enable` หรือ `npx pnpm@9.12.0` เพื่อไม่ให้ `pnpm-lock.yaml` เปลี่ยนรูปแบบ (CI จะล้ม)
 
 ## โครงสร้างโปรเจกต์
 
