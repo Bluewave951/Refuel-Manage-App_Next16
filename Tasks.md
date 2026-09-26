@@ -16,12 +16,14 @@
 
 ## Phase 1 — ฐานข้อมูล Supabase
 
-- [ ] สร้าง/เลือกโปรเจกต์ Supabase และตรวจตารางที่มีอยู่
-- [ ] เพิ่ม `directUrl = env("DIRECT_URL")` ใน `prisma/schema.prisma`
-- [ ] ตั้งค่า `DATABASE_URL` (pooler, `?pgbouncer=true`) และ `DIRECT_URL` ใน `.env`
-- [ ] รัน `pnpm db:migrate` สร้าง migration แรก แล้ว apply ไปที่ Supabase
-- [ ] รัน seed บน Supabase
-- [ ] เปิด RLS บนตาราง `stations`, `refuels` (เข้าถึงผ่าน Prisma ฝั่ง server เท่านั้น) และตรวจ advisors
+- [x] สร้าง/เลือกโปรเจกต์ Supabase และตรวจตารางที่มีอยู่ (ฐานข้อมูลว่าง)
+- [x] เพิ่ม `directUrl = env("DIRECT_URL")` ใน `prisma/schema.prisma`
+- [ ] ตั้งค่า `DATABASE_URL` (pooler, `?pgbouncer=true`) และ `DIRECT_URL` ใน `.env` — ใส่รหัสผ่านเอง (ดูตัวอย่างใน `.env.example`)
+- [x] สร้าง migration `prisma/migrations/0_init` และ apply ไปที่ Supabase แล้ว
+- [ ] รัน `pnpm prisma migrate resolve --applied 0_init` ครั้งเดียว เพื่อให้ Prisma รู้ว่า migration นี้ถูก apply แล้ว
+- [x] seed สถานี 9 แห่ง + รายการตัวอย่าง 3 รายการบน Supabase
+- [x] เปิด RLS บนตาราง `stations`, `refuels` (เข้าถึงผ่าน Prisma ฝั่ง server เท่านั้น) และตรวจ advisors
+- [ ] จัดการฟังก์ชัน `public.rls_auto_enable()` (SECURITY DEFINER ที่ anon เรียกได้ — มีอยู่ก่อนแล้ว ไม่ได้มาจากแอปนี้)
 
 ## Phase 2 — ความปลอดภัย
 
