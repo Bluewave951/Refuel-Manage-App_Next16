@@ -29,7 +29,7 @@ model Station {
 model Refuel {
   id String @id @default(cuid())
 
-  userId String? @db.Uuid // เจ้าของรายการ (Supabase auth.users.id)
+  userId String  @db.Uuid // เจ้าของรายการ (Supabase auth.users.id)
 
   refuelDate DateTime @db.Date // วันที่เติมน้ำมัน
   stationId  String

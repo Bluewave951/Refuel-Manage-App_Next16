@@ -18,9 +18,9 @@
 
 - [x] สร้าง/เลือกโปรเจกต์ Supabase และตรวจตารางที่มีอยู่ (ฐานข้อมูลว่าง)
 - [x] เพิ่ม `directUrl = env("DIRECT_URL")` ใน `prisma/schema.prisma`
-- [ ] ตั้งค่า `DATABASE_URL` (pooler, `?pgbouncer=true`) และ `DIRECT_URL` ใน `.env` — ใส่รหัสผ่านเอง (ดูตัวอย่างใน `.env.example`)
+- [x] ตั้งค่า `DATABASE_URL` (pooler, `?pgbouncer=true`) และ `DIRECT_URL` ใน `.env` — ใส่รหัสผ่านเอง (ดูตัวอย่างใน `.env.example`)
 - [x] สร้าง migration `prisma/migrations/0_init` และ apply ไปที่ Supabase แล้ว
-- [ ] รัน `pnpm prisma migrate resolve --applied 0_init` ครั้งเดียว เพื่อให้ Prisma รู้ว่า migration นี้ถูก apply แล้ว
+- [x] รัน `pnpm prisma migrate resolve --applied 0_init` ครั้งเดียว เพื่อให้ Prisma รู้ว่า migration นี้ถูก apply แล้ว
 - [x] seed สถานี 9 แห่ง + รายการตัวอย่าง 3 รายการบน Supabase
 - [x] เปิด RLS บนตาราง `stations`, `refuels` (เข้าถึงผ่าน Prisma ฝั่ง server เท่านั้น) และตรวจ advisors
 - [x] ถอนสิทธิ์ EXECUTE ของ `public.rls_auto_enable()` จาก anon/authenticated (SECURITY DEFINER ที่มีอยู่ก่อนแล้ว)
@@ -31,9 +31,9 @@
 - [x] ป้องกันทุก route ใต้ `/api/*` และหน้า `/`, `/print` (`src/proxy.ts` + `requireUserId()`)
 - [x] เพิ่ม `userId` ใน `Refuel` (migration `1_add_user_id`) และกรองข้อมูลตามผู้ใช้ทุก query
 - [ ] ปิด "Allow new users to sign up" ใน Supabase Dashboard > Authentication > Sign In / Providers
-- [ ] สร้างผู้ใช้ (ไม่เกิน 10 คน) ใน Dashboard > Authentication > Users > Add user
-- [ ] รายการตัวอย่าง 3 รายการจาก seed ยังไม่มีเจ้าของ (มองไม่เห็นในแอป) — กำหนดเจ้าของหรือลบทิ้ง แล้วตั้ง `userId` เป็น NOT NULL
-- [ ] รัน `pnpm prisma migrate resolve --applied 1_add_user_id`
+- [x] สร้างผู้ใช้ (ไม่เกิน 10 คน) ใน Dashboard > Authentication > Users > Add user
+- [x] โอนรายการตัวอย่าง 3 รายการให้ผู้ใช้คนแรก และตั้ง `userId` เป็น NOT NULL (migration `2_user_id_required`)
+- [x] รัน `pnpm prisma migrate resolve --applied 1_add_user_id`
 - [ ] Rate limit สำหรับ POST/PATCH/DELETE
 
 ## Phase 3 — คุณภาพโค้ดและการทดสอบ

@@ -26,8 +26,12 @@ async function main() {
   const shell = await prisma.station.findUniqueOrThrow({ where: { code: "SHELL" } });
   const pt = await prisma.station.findUniqueOrThrow({ where: { code: "PT" } });
 
-  const count = await prisma.refuel.count();
-  if (count === 0) {
+  // รายการตัวอย่างต้องมีเจ้าของ — ตั้ง SEED_USER_ID (auth.users.id ของ Supabase) ถ้าต้องการ
+  const userId = process.env.SEED_USER_ID;
+  const count = userId ? await prisma.refuel.count({ where: { userId } }) : -1;
+  if (!userId) {
+    console.log("ข้ามรายการตัวอย่าง (ไม่ได้ตั้ง SEED_USER_ID)");
+  } else if (count === 0) {
     const rows = [
       { date: "2026-07-07", stationId: shell.id, province: "กรุงเทพมหานคร", price: 49.89, amount: 2000, odo: 210350 },
       { date: "2026-07-08", stationId: shell.id, province: "กรุงเทพมหานคร", price: 49.89, amount: 1000, odo: 210630 },
@@ -37,6 +41,7 @@ async function main() {
     for (const r of rows) {
       await prisma.refuel.create({
         data: {
+          userId,
           refuelDate: new Date(`${r.date}T00:00:00.000Z`),
           stationId: r.stationId,
           province: r.province,
