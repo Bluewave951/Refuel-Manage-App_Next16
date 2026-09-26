@@ -210,3 +210,47 @@ export async function getRefuel(userId: string, id: string) {
   const row = await prisma.refuel.findFirst({ where: { id, userId }, include: { station: true } });
   return row ? toRefuelDto(row) : null;
 }
+
+/**
+ * เลขไมล์ต้องไม่ลดลงตามวันที่:
+ *   - ต้อง >= เลขไมล์สูงสุดของรายการที่ "ก่อน" วันนี้
+ *   - ต้อง <= เลขไมล์ต่ำสุดของรายการที่ "หลัง" วันนี้
+ * รายการวันเดียวกันไม่นำมาเทียบ (ลำดับในวันเดียวกันไม่แน่นอน)
+ * คืนข้อความ error หรือ null ถ้าผ่าน
+ */
+export function checkOdometerOrder(
+  odometer: number,
+  maxBefore: number | null,
+  minAfter: number | null
+): string | null {
+  if (maxBefore !== null && odometer < maxBefore) {
+    return `เลขไมล์ต้องไม่น้อยกว่าครั้งก่อนหน้า (${maxBefore.toLocaleString("th-TH")} กม.)`;
+  }
+  if (minAfter !== null && odometer > minAfter) {
+    return `เลขไมล์ต้องไม่มากกว่าครั้งถัดไป (${minAfter.toLocaleString("th-TH")} กม.)`;
+  }
+  return null;
+}
+
+/** ตรวจเลขไมล์กับรายการอื่นของผู้ใช้คนเดียวกัน (excludeId = รายการที่กำลังแก้ไข) */
+export async function validateOdometer(
+  userId: string,
+  refuelDate: string,
+  odometer: number | null | undefined,
+  excludeId?: string
+): Promise<string | null> {
+  if (odometer == null) return null;
+  const date = new Date(`${refuelDate}T00:00:00.000Z`);
+  const base: Prisma.RefuelWhereInput = {
+    userId,
+    odometer: { not: null },
+    ...(excludeId ? { id: { not: excludeId } } : {}),
+  };
+
+  const [before, after] = await Promise.all([
+    prisma.refuel.aggregate({ where: { ...base, refuelDate: { lt: date } }, _max: { odometer: true } }),
+    prisma.refuel.aggregate({ where: { ...base, refuelDate: { gt: date } }, _min: { odometer: true } }),
+  ]);
+
+  return checkOdometerOrder(odometer, dec(before._max.odometer), dec(after._min.odometer));
+}

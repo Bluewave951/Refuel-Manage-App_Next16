@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { badRequest, handleError, notFound, ok } from "@/lib/api";
-import { deleteRefuel, getRefuel, updateRefuel } from "@/lib/refuel-service";
+import { deleteRefuel, getRefuel, updateRefuel, validateOdometer } from "@/lib/refuel-service";
 import { refuelUpdateSchema } from "@/lib/validations";
 import { requireUserId } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -30,6 +30,17 @@ export async function PATCH(req: NextRequest, { params }: Ctx) {
     if (input.stationId) {
       const station = await prisma.station.findUnique({ where: { id: input.stationId } });
       if (!station) return badRequest("ไม่พบสถานีบริการที่เลือก");
+    }
+    if (input.refuelDate !== undefined || input.odometer !== undefined) {
+      const current = await getRefuel(userId, id);
+      if (!current) return notFound();
+      const odoError = await validateOdometer(
+        userId,
+        input.refuelDate ?? current.refuelDate,
+        input.odometer !== undefined ? input.odometer : current.odometer,
+        id
+      );
+      if (odoError) return badRequest(odoError, { odometer: [odoError] });
     }
     const item = await updateRefuel(userId, id, input);
     return item ? ok(item) : notFound();

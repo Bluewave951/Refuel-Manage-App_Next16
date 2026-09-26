@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { handleError, ok, badRequest } from "@/lib/api";
-import { createRefuel, listRefuels } from "@/lib/refuel-service";
+import { createRefuel, listRefuels, validateOdometer } from "@/lib/refuel-service";
 import { parseRefuelQuery, refuelInputSchema } from "@/lib/validations";
 import { prisma } from "@/lib/prisma";
 import { requireUserId } from "@/lib/auth";
@@ -27,6 +27,9 @@ export async function POST(req: NextRequest) {
 
     const station = await prisma.station.findUnique({ where: { id: input.stationId } });
     if (!station) return badRequest("ไม่พบสถานีบริการที่เลือก");
+
+    const odoError = await validateOdometer(userId, input.refuelDate, input.odometer);
+    if (odoError) return badRequest(odoError, { odometer: [odoError] });
 
     return ok(await createRefuel(userId, input), { status: 201 });
   } catch (e) {
