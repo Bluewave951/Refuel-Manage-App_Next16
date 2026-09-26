@@ -28,6 +28,12 @@
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
   --color-border: var(--border);
+  --color-tone-blue: var(--tone-blue);
+  --color-tone-cyan: var(--tone-cyan);
+  --color-tone-green: var(--tone-green);
+  --color-tone-amber: var(--tone-amber);
+  --color-tone-violet: var(--tone-violet);
+  --color-tone-rose: var(--tone-rose);
   --color-input: var(--input);
   --color-ring: var(--ring);
 
@@ -67,6 +73,21 @@
   --border: oklch(0.918 0.01 247.9);
   --input: oklch(0.895 0.012 247.9);
   --ring: oklch(0.55 0.18 264.4);
+
+  /* สีประจำการ์ดสรุป / จุดเด่น */
+  --tone-blue: oklch(0.55 0.2 262);
+  --tone-cyan: oklch(0.6 0.12 215);
+  --tone-green: oklch(0.58 0.15 155);
+  --tone-amber: oklch(0.68 0.16 60);
+  --tone-violet: oklch(0.55 0.2 295);
+  --tone-rose: oklch(0.6 0.2 12);
+
+  --hero-from: oklch(0.47 0.22 265);
+  --hero-via: oklch(0.5 0.22 290);
+  --hero-to: oklch(0.62 0.15 220);
+  --blob-1: oklch(0.85 0.1 265 / 0.55);
+  --blob-2: oklch(0.88 0.1 190 / 0.5);
+  --blob-3: oklch(0.9 0.09 330 / 0.4);
 }
 
 .dark {
@@ -97,6 +118,20 @@
   --border: oklch(0.32 0.03 265.8);
   --input: oklch(0.35 0.03 265.8);
   --ring: oklch(0.6 0.16 258);
+
+  --tone-blue: oklch(0.72 0.15 262);
+  --tone-cyan: oklch(0.76 0.11 215);
+  --tone-green: oklch(0.74 0.14 155);
+  --tone-amber: oklch(0.8 0.14 70);
+  --tone-violet: oklch(0.74 0.15 295);
+  --tone-rose: oklch(0.72 0.17 12);
+
+  --hero-from: oklch(0.36 0.16 265);
+  --hero-via: oklch(0.38 0.16 290);
+  --hero-to: oklch(0.42 0.12 220);
+  --blob-1: oklch(0.4 0.15 265 / 0.35);
+  --blob-2: oklch(0.42 0.1 200 / 0.3);
+  --blob-3: oklch(0.4 0.14 320 / 0.25);
 }
 
 @layer base {
@@ -109,6 +144,20 @@
     color: var(--color-foreground);
     font-feature-settings: "cv05", "ss01";
     -webkit-font-smoothing: antialiased;
+  }
+
+  /* พื้นหลังแอป: วงสีฟุ้ง ๆ ติดกับหน้าจอ */
+  .app-bg {
+    background-color: var(--color-background);
+    background-image:
+      radial-gradient(40rem 28rem at -10% -5%, var(--blob-1), transparent 70%),
+      radial-gradient(36rem 26rem at 110% 10%, var(--blob-2), transparent 70%),
+      radial-gradient(40rem 30rem at 50% 115%, var(--blob-3), transparent 70%);
+    background-attachment: fixed;
+  }
+
+  .hero-gradient {
+    background-image: linear-gradient(120deg, var(--hero-from), var(--hero-via) 55%, var(--hero-to));
   }
 
   /* ตัวเลขในตาราง/การ์ดสรุปต้องเรียงตรงคอลัมน์ */

@@ -25,8 +25,8 @@ interface Props {
 
 export function FilterBar({ filters, stations, onChange, onReset }: Props) {
   return (
-    <div className="no-print grid gap-3 md:grid-cols-4 lg:grid-cols-5">
-      <div>
+    <div className="no-print grid grid-cols-2 gap-2.5 sm:gap-3 md:grid-cols-4 lg:grid-cols-5">
+      <div className="col-span-2 sm:col-span-1">
         <Label className="mb-1.5 block">ช่วงเวลา</Label>
         <Select value={filters.range} onValueChange={(v) => onChange({ range: v })}>
           <SelectTrigger>
@@ -99,7 +99,7 @@ export function FilterBar({ filters, stations, onChange, onReset }: Props) {
         </Select>
       </div>
 
-      <div className="flex items-end">
+      <div className="col-span-2 flex items-end md:col-span-1">
         <Button type="button" variant="outline" onClick={onReset} className="w-full">
           <CalendarRange />
           ล้างตัวกรอง

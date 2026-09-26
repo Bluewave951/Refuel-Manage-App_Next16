@@ -85,6 +85,13 @@ function TrendChart({ title, unit, data, value, kind, digits, zeroBased }: Chart
     }, [])
     .join(" ");
 
+  // เดือนที่ไม่มีรายการ: ต่อเส้นประข้ามช่องว่าง เพื่อให้ยังอ่านแนวโน้มได้
+  const presentIdx = values.flatMap((v, i) => (v === null ? [] : [i]));
+  const bridges = presentIdx.slice(1).flatMap((i, k) => {
+    const prev = presentIdx[k];
+    return i - prev > 1 ? [`M${x(prev)},${y(values[prev]!)} L${x(i)},${y(values[i]!)}`] : [];
+  });
+
   const h = hover !== null ? data[hover] : null;
   const hv = hover !== null ? values[hover] : null;
 
@@ -169,6 +176,17 @@ function TrendChart({ title, unit, data, value, kind, digits, zeroBased }: Chart
 
             {kind === "line" && (
               <>
+                {bridges.map((d) => (
+                  <path
+                    key={d}
+                    d={d}
+                    fill="none"
+                    stroke="var(--primary)"
+                    strokeOpacity={0.5}
+                    strokeWidth={2}
+                    strokeDasharray="4 4"
+                  />
+                ))}
                 <path d={linePath} fill="none" stroke="var(--primary)" strokeWidth={2} strokeLinejoin="round" />
                 {values.map((v, i) =>
                   v === null ? null : (

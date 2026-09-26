@@ -17,7 +17,7 @@ export function ExportActions({ queryString, disabled }: Props) {
   };
 
   return (
-    <div className="no-print flex flex-wrap items-center gap-2">
+    <div className="no-print grid gap-2 sm:flex sm:flex-wrap sm:items-center">
       <Button variant="destructive" disabled={disabled} onClick={() => openPrint(true)}>
         <FileText />
         บันทึกเป็น PDF

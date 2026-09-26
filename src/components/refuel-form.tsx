@@ -98,18 +98,20 @@ export function RefuelForm({ stations, editing, onSaved, onCancelEdit }: Props) 
   };
 
   return (
-    <Card className="no-print">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Fuel className="size-4" />
-          {isEdit ? "แก้ไขรายการเติมน้ำมัน" : "เพิ่มข้อมูลใหม่"}
+    <Card className="no-print overflow-hidden bg-card/90 backdrop-blur">
+      <CardHeader className="border-b border-border/60 bg-gradient-to-r from-primary/10 via-transparent to-transparent">
+        <CardTitle className="flex items-center gap-2.5">
+          <span className="hero-gradient grid size-8 place-items-center rounded-lg text-white shadow">
+            <Fuel className="size-4" />
+          </span>
+          {isEdit ? "แก้ไขรายการเติมน้ำมัน" : "เพิ่มรายการเติมน้ำมัน"}
         </CardTitle>
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={onSubmit} className="grid gap-5 md:grid-cols-3" noValidate>
+        <form onSubmit={onSubmit} className="grid grid-cols-2 gap-x-3 gap-y-4 pt-5 md:grid-cols-3 md:gap-x-5" noValidate>
           {/* วันที่ */}
-          <Field label="วันที่เติมน้ำมัน" required error={errors.refuelDate?.message}>
+          <Field label="วันที่เติมน้ำมัน" required error={errors.refuelDate?.message} className="col-span-2 md:col-span-1">
             <Input
               type="date"
               className="tabular"
@@ -119,7 +121,7 @@ export function RefuelForm({ stations, editing, onSaved, onCancelEdit }: Props) 
           </Field>
 
           {/* สถานี */}
-          <Field label="ชื่อสถานีบริการ" required error={errors.stationId?.message}>
+          <Field label="ชื่อสถานีบริการ" required error={errors.stationId?.message} className="col-span-2 md:col-span-1">
             <Select
               value={stationId}
               onValueChange={(v) => setValue("stationId", v, { shouldValidate: true })}
@@ -138,7 +140,7 @@ export function RefuelForm({ stations, editing, onSaved, onCancelEdit }: Props) 
           </Field>
 
           {/* จังหวัด */}
-          <Field label="จังหวัด" required error={errors.province?.message}>
+          <Field label="จังหวัด" required error={errors.province?.message} className="col-span-2 md:col-span-1">
             <Select
               value={province}
               onValueChange={(v) => setValue("province", v, { shouldValidate: true })}
@@ -157,7 +159,7 @@ export function RefuelForm({ stations, editing, onSaved, onCancelEdit }: Props) 
           </Field>
 
           {/* ราคา/ลิตร */}
-          <Field label="ราคาเชื้อเพลิง (บาท/ลิตร)" required error={errors.pricePerLiter?.message}>
+          <Field label="ราคา (บาท/ลิตร)" required error={errors.pricePerLiter?.message}>
             <Input
               type="number"
               step="0.01"
@@ -171,7 +173,7 @@ export function RefuelForm({ stations, editing, onSaved, onCancelEdit }: Props) 
           </Field>
 
           {/* จำนวนเงิน */}
-          <Field label="จำนวนเงินที่เติม (บาท)" required error={errors.amount?.message}>
+          <Field label="จำนวนเงิน (บาท)" required error={errors.amount?.message}>
             <Input
               type="number"
               step="0.01"
@@ -185,11 +187,11 @@ export function RefuelForm({ stations, editing, onSaved, onCancelEdit }: Props) 
           </Field>
 
           {/* ปริมาณ (คำนวณอัตโนมัติ) */}
-          <Field label="ปริมาณเติม (ลิตร)" hint="คำนวณจากจำนวนเงิน ÷ ราคาต่อลิตร">
+          <Field label="ปริมาณเติม (ลิตร)" hint="คำนวณจากจำนวนเงิน ÷ ราคาต่อลิตร" className="col-span-2 md:col-span-1">
             <Input
               readOnly
               tabIndex={-1}
-              className="tabular"
+              className="tabular border-primary/20 bg-primary/5 font-semibold text-primary"
               placeholder="คำนวณอัตโนมัติ"
               value={liters === null ? "" : formatNumber(liters, 2)}
             />
@@ -200,6 +202,7 @@ export function RefuelForm({ stations, editing, onSaved, onCancelEdit }: Props) 
             label="เลขไมล์รถ (กม.)"
             hint="ใส่ไว้เพื่อให้ระบบคำนวณอัตราสิ้นเปลืองได้"
             error={errors.odometer?.message}
+            className="col-span-2 md:col-span-1"
           >
             <Input
               type="number"
@@ -214,16 +217,16 @@ export function RefuelForm({ stations, editing, onSaved, onCancelEdit }: Props) 
           </Field>
 
           {/* หมายเหตุ */}
-          <Field label="หมายเหตุ" error={errors.note?.message} className="md:col-span-2">
+          <Field label="หมายเหตุ" error={errors.note?.message} className="col-span-2">
             <Input placeholder="เช่น เติมเต็มถัง ก่อนขึ้นเขา" {...register("note")} />
           </Field>
 
-          <div className="flex items-center justify-center gap-3 pt-1 md:col-span-3">
-            <Button type="button" variant="outline" onClick={handleCancel} disabled={isSubmitting}>
+          <div className="col-span-2 grid grid-cols-2 gap-3 pt-1 md:col-span-3 md:flex md:justify-center">
+            <Button type="button" variant="outline" size="lg" onClick={handleCancel} disabled={isSubmitting}>
               <RotateCcw />
               {isEdit ? "ยกเลิกการแก้ไข" : "ล้างฟอร์ม"}
             </Button>
-            <Button type="submit" variant="success" disabled={isSubmitting}>
+            <Button type="submit" variant="success" size="lg" disabled={isSubmitting}>
               {isEdit ? <Save /> : <Plus />}
               {isSubmitting ? "กำลังบันทึก…" : isEdit ? "บันทึกการแก้ไข" : "เพิ่มข้อมูล"}
             </Button>

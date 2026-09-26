@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="th">
-      <body className={`${plexThai.variable} ${plexMono.variable} font-sans antialiased`}>
+      <body className={`${plexThai.variable} ${plexMono.variable} font-sans antialiased app-bg min-h-dvh`}>
         {children}
         <Toaster />
       </body>
