@@ -110,7 +110,7 @@ export default async function PrintPage({ searchParams }: { searchParams: Search
 
         <footer className="mt-6 border-t border-slate-200 pt-3 text-[11px] leading-relaxed text-slate-500">
           อัตราสิ้นเปลืองคำนวณแบบเติมเต็มถัง: ระยะทาง (เลขไมล์สูงสุด − ต่ำสุด) หารด้วยปริมาณน้ำมันที่เติมทุกครั้ง
-          ยกเว้นครั้งแรกของช่วง · ออกโดย Refuel Manage App
+          ยกเว้นครั้งแรกของช่วง · ออกโดย Car_management_System
         </footer>
       </div>
     </div>

@@ -18,7 +18,7 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Refuel Manage App — บันทึกค่าใช้จ่ายในการเติมน้ำมัน",
+  title: "Car_management_System — ระบบการจัดการรถยนต์",
   description: "บันทึก สรุป และส่งออกรายงานค่าใช้จ่ายน้ำมันรถ พร้อมคำนวณอัตราสิ้นเปลืองอัตโนมัติ",
 };
 

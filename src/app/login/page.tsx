@@ -1,8 +1,8 @@
-import { Fuel } from "lucide-react";
+import { Car } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LoginForm } from "./login-form";
 
-export const metadata = { title: "เข้าสู่ระบบ — Refuel Manage App" };
+export const metadata = { title: "เข้าสู่ระบบ — Car_management_System" };
 
 export default function LoginPage() {
   return (
@@ -12,10 +12,10 @@ export default function LoginPage() {
       <Card className="relative w-full max-w-sm rounded-2xl shadow-2xl">
         <CardHeader className="items-center text-center">
           <span className="hero-gradient mb-2 grid size-12 place-items-center rounded-xl shadow-lg">
-            <Fuel className="size-6" />
+            <Car className="size-6" />
           </span>
-          <CardTitle>Refuel Manage App</CardTitle>
-          <p className="text-sm text-muted-foreground">เข้าสู่ระบบเพื่อบันทึกค่าใช้จ่ายน้ำมัน</p>
+          <CardTitle>Car_management_System</CardTitle>
+          <p className="text-sm text-muted-foreground">เข้าสู่ระบบการจัดการรถยนต์</p>
         </CardHeader>
         <CardContent>
           <LoginForm />
