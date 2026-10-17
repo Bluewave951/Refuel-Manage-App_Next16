@@ -1,4 +1,4 @@
-# Tasks — Refuel Manage App
+# Tasks — Car_management_System
 
 สถานะ: `[x]` เสร็จแล้ว · `[ ]` ยังไม่ทำ — อ้างอิงการออกแบบใน [design.md](design.md)
 
@@ -55,6 +55,22 @@
 
 ## Phase 5 — Deploy
 
-- [ ] Deploy บน Vercel (ตั้ง env ให้ครบ)
+- [ ] Deploy บน Vercel (ตั้ง env ให้ครบ รวม `GEMINI_API_KEY` ถ้าใช้ AI อ่านใบเสร็จ)
 - [x] ตรวจ build `prisma generate && next build` ผ่านบน CI
 - [ ] Backup ฐานข้อมูลอัตโนมัติ
+
+## Phase 6 — โมดูลซ่อมบำรุง (ใบเสร็จซ่อมรถ)
+
+- [x] ตาราง `service_records` + `service_items` (migration `3_add_service_records`) แยกตามผู้ใช้
+- [x] API `/api/services` (GET, POST) และ `/api/services/:id` (GET, PUT, DELETE) — แก้ไขทั้งใบแทนที่รายการเดิม
+- [x] คำนวณยอดฝั่ง server: ยอดต่อรายการ = จำนวน × ราคา − ส่วนลด, สุทธิ = Σ รายการ − ส่วนลดท้ายบิล (`service-totals.ts` + unit test)
+- [x] หน้า `/services` 3 แท็บ (สรุปข้อมูล / รายการที่บันทึก / เพิ่มรายการ) + แถบเมนูล่างบนมือถือ
+- [x] การ์ดสรุปแบบเดียวกับหน้าเติมน้ำมัน (ใช้ `StatCards` ร่วมกัน) + กราฟค่าใช้จ่ายรายเดือน (`MonthlyCostTrend`)
+- [x] ส่งออก PDF / CSV และหน้าตัวอย่างก่อนพิมพ์ (`/services/print`, `/api/export/services-csv`)
+- [x] แนบภาพใบเสร็จ เก็บใน Supabase Storage bucket `receipts` แบบ private (migration `4_service_receipt_image`, `supabase/receipts-storage.sql`)
+- [x] ให้ Google Gemini (free tier) อ่านภาพใบเสร็จแล้วเติมฟอร์มอัตโนมัติ — เปิดเมื่อมี `GEMINI_API_KEY`, เตือนเมื่อยอดไม่ตรงกับใบเสร็จ
+- [x] เปลี่ยนชื่อแอปเป็น Car_management_System + ปุ่มสลับโมดูลใน header
+- [ ] ลบไฟล์ภาพที่อัปโหลดแล้วแต่ไม่ได้กดบันทึก (ไฟล์กำพร้าใน bucket)
+- [ ] ผูกใบเสร็จซ่อมกับรถแต่ละคัน (เมื่อทำตาราง `Vehicle` ใน Phase 4)
+- [ ] แจ้งเตือนรอบเปลี่ยนน้ำมันเครื่อง/บำรุงรักษาตามเลขไมล์หรือระยะเวลา
+- [ ] Export เป็นไฟล์ `.xlsx` จริง (ตอนนี้เป็น CSV ที่เปิดใน Excel ได้)
