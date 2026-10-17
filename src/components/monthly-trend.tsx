@@ -295,3 +295,46 @@ export function MonthlyTrend({ data }: { data: MonthlyPoint[] }) {
     </section>
   );
 }
+
+/** กราฟค่าใช้จ่ายรายเดือนอย่างเดียว (ใช้กับหน้าซ่อมบำรุง) */
+export function MonthlyCostTrend({ data }: { data: MonthlyPoint[] }) {
+  if (data.length === 0) return null;
+
+  return (
+    <section className="space-y-3">
+      <TrendChart
+        title="ค่าใช้จ่ายรายเดือน"
+        unit="บาท"
+        data={data}
+        value={(p) => p.totalAmount}
+        kind="bar"
+        digits={2}
+        zeroBased
+      />
+
+      <details className="text-sm">
+        <summary className="cursor-pointer text-muted-foreground hover:text-foreground">ดูเป็นตาราง</summary>
+        <div className="mt-2 overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border text-left text-xs text-muted-foreground">
+                <th className="px-2 py-1.5 font-medium">เดือน</th>
+                <th className="px-2 py-1.5 text-right font-medium">ครั้ง</th>
+                <th className="px-2 py-1.5 text-right font-medium">ค่าใช้จ่าย (บาท)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((p) => (
+                <tr key={p.month} className="border-b border-border/60">
+                  <td className="px-2 py-1.5">{monthLabel(p.month)}</td>
+                  <td className="tabular px-2 py-1.5 text-right">{formatNumber(p.count, 0)}</td>
+                  <td className="tabular px-2 py-1.5 text-right">{formatNumber(p.totalAmount, 2)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  );
+}

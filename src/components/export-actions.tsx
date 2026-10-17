@@ -7,13 +7,17 @@ interface Props {
   /** query string ปัจจุบัน (ตัวกรองเดียวกับที่แสดงบนหน้าจอ) */
   queryString: string;
   disabled?: boolean;
+  /** หน้าตัวอย่างก่อนพิมพ์ */
+  printPath?: string;
+  /** endpoint ดาวน์โหลด CSV */
+  csvPath?: string;
 }
 
-export function ExportActions({ queryString, disabled }: Props) {
+export function ExportActions({ queryString, disabled, printPath = "/print", csvPath = "/api/export/csv" }: Props) {
   const openPrint = (auto: boolean) => {
     const params = new URLSearchParams(queryString);
     if (auto) params.set("autoprint", "1");
-    window.open(`/print?${params.toString()}`, "_blank", "noopener,noreferrer");
+    window.open(`${printPath}?${params.toString()}`, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -24,7 +28,7 @@ export function ExportActions({ queryString, disabled }: Props) {
       </Button>
 
       <Button variant="success" asChild aria-disabled={disabled}>
-        <a href={`/api/export/csv?${queryString}`}>
+        <a href={`${csvPath}?${queryString}`}>
           <FileDown />
           ดาวน์โหลด CSV
         </a>

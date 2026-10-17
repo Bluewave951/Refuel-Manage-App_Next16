@@ -1,7 +1,8 @@
-import { Banknote, Droplets, Gauge, ListChecks, Route } from "lucide-react";
+import { Banknote, CalendarCheck, Calculator, Droplets, Gauge, ListChecks, Route, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { formatNumber } from "@/lib/format";
+import { formatNumber, formatThaiDate } from "@/lib/format";
 import type { RefuelSummary } from "@/types/refuel";
+import type { ServiceSummary } from "@/types/service";
 
 interface Props {
   summary: RefuelSummary;
@@ -38,6 +39,55 @@ export function SummaryCards({ summary, className }: Props) {
     },
   ];
 
+  return <StatCards hero={hero} rangeLabel={summary.rangeLabel} cards={cards} className={className} />;
+}
+
+/** การ์ดสรุปของหน้าซ่อมบำรุง (หน้าตาเดียวกับหน้าเติมน้ำมัน) */
+export function ServiceSummaryCards({ summary, className }: { summary: ServiceSummary; className?: string }) {
+  const hero = {
+    icon: Banknote,
+    label: "ค่าซ่อมบำรุงรวม",
+    value: formatNumber(summary.totalAmount, 2),
+    unit: "บาท",
+  };
+
+  const cards = [
+    { icon: ListChecks, label: "จำนวนครั้ง", value: formatNumber(summary.count, 0), unit: "ครั้ง", tone: TONES.blue },
+    {
+      icon: Calculator,
+      label: "เฉลี่ยต่อครั้ง",
+      value: summary.avgAmount === null ? "—" : formatNumber(summary.avgAmount, 2),
+      unit: "บาท",
+      tone: TONES.cyan,
+    },
+    {
+      icon: CalendarCheck,
+      label: "เข้าซ่อมล่าสุด",
+      value: summary.lastServiceDate ? formatThaiDate(summary.lastServiceDate) : "—",
+      unit: "วันที่ (พ.ศ.)",
+      tone: TONES.amber,
+    },
+    {
+      icon: Gauge,
+      label: "เลขไมล์ล่าสุด",
+      value: summary.lastOdometer === null ? "—" : formatNumber(summary.lastOdometer, 0),
+      unit: "กม.",
+      tone: TONES.violet,
+    },
+  ];
+
+  return <StatCards hero={hero} rangeLabel={summary.rangeLabel} cards={cards} className={className} />;
+}
+
+interface StatCardsProps {
+  hero: { icon: LucideIcon; label: string; value: string; unit: string };
+  rangeLabel: string;
+  cards: { icon: LucideIcon; label: string; value: string; unit: string; tone: string }[];
+  className?: string;
+}
+
+/** การ์ดเด่น 1 ใบ + การ์ดย่อย 4 ใบ */
+function StatCards({ hero, rangeLabel, cards, className }: StatCardsProps) {
   return (
     <div className={cn("grid grid-cols-2 gap-3 lg:grid-cols-6", className)}>
       {/* การ์ดเด่น: ค่าใช้จ่ายรวม */}
@@ -51,7 +101,7 @@ export function SummaryCards({ summary, className }: Props) {
         </div>
         <p className="tabular relative mt-3 text-3xl font-bold leading-none sm:text-4xl">{hero.value}</p>
         <p className="relative mt-1.5 text-xs text-(--hero-ink)/80">
-          {hero.unit} · {summary.rangeLabel}
+          {hero.unit} · {rangeLabel}
         </p>
       </div>
 

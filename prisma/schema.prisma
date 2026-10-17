@@ -6,7 +6,6 @@ datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
- 
 }
 
 /// สถานีบริการน้ำมัน (ปตท., เชลล์, บางจาก, ...)
@@ -29,7 +28,7 @@ model Station {
 model Refuel {
   id String @id @default(cuid())
 
-  userId String  @db.Uuid // เจ้าของรายการ (Supabase auth.users.id)
+  userId String @db.Uuid // เจ้าของรายการ (Supabase auth.users.id)
 
   refuelDate DateTime @db.Date // วันที่เติมน้ำมัน
   stationId  String
@@ -52,4 +51,53 @@ model Refuel {
   @@index([province])
   @@index([odometer])
   @@map("refuels")
+}
+
+/// ใบเสร็จซ่อม/บำรุงรักษารถ 1 ใบ
+model ServiceRecord {
+  id String @id @default(cuid())
+
+  userId String @db.Uuid // เจ้าของรายการ (Supabase auth.users.id)
+
+  serviceDate   DateTime @db.Date // วันที่ในใบเสร็จ
+  shopName      String   @db.VarChar(200) // ชื่อร้าน/อู่
+  receiptNo     String?  @db.VarChar(100) // เล่มที่/เลขที่ใบเสร็จ
+  plateNo       String?  @db.VarChar(50) // ทะเบียนรถ
+  vehicleModel  String?  @db.VarChar(100) // ยี่ห้อ/รุ่น
+  odometer      Decimal? @db.Decimal(12, 2) // เลขไมล์ขณะเข้าซ่อม (กม.)
+  paymentMethod String?  @db.VarChar(100) // เงินสด / บัตรเครดิต / โอน
+
+  subtotal         Decimal @db.Decimal(12, 2) // รวมทุกรายการ (หลังส่วนลดรายรายการ)
+  discount         Decimal @default(0) @db.Decimal(12, 2) // ส่วนลดท้ายบิล
+  totalAmount      Decimal @db.Decimal(12, 2) // ยอดสุทธิ = subtotal - discount
+  note             String? @db.VarChar(500)
+  receiptImagePath String? @db.VarChar(300) // path ใน Supabase Storage bucket "receipts"
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  items ServiceItem[]
+
+  @@index([userId, serviceDate])
+  @@map("service_records")
+}
+
+/// รายการสินค้า/ค่าบริการในใบเสร็จ
+model ServiceItem {
+  id       String @id @default(cuid())
+  recordId String
+
+  sortOrder   Int     @default(0)
+  itemCode    String? @db.VarChar(50) // รหัสสินค้า
+  description String  @db.VarChar(300)
+  quantity    Decimal @db.Decimal(10, 2)
+  unit        String? @db.VarChar(30) // ชุด / ครั้ง / ชิ้น
+  unitPrice   Decimal @db.Decimal(12, 2)
+  discount    Decimal @default(0) @db.Decimal(12, 2)
+  lineTotal   Decimal @db.Decimal(12, 2) // = quantity * unitPrice - discount
+
+  record ServiceRecord @relation(fields: [recordId], references: [id], onDelete: Cascade)
+
+  @@index([recordId])
+  @@map("service_items")
 }
