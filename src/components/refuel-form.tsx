@@ -120,6 +120,25 @@ export function RefuelForm({ stations, editing, onSaved, onCancelEdit }: Props) 
             />
           </Field>
 
+          {/* เลขไมล์ */}
+          <Field
+            label="เลขไมล์รถ (กม.)"
+            hint="ใส่ไว้เพื่อให้ระบบคำนวณอัตราสิ้นเปลืองได้"
+            error={errors.odometer?.message}
+            className="col-span-2 md:col-span-1"
+          >
+            <Input
+              type="number"
+              step="0.01"
+              min="0"
+              inputMode="decimal"
+              placeholder="เช่น 45230"
+              className="tabular"
+              aria-invalid={!!errors.odometer}
+              {...register("odometer", { setValueAs: (v) => (v === "" ? null : Number(v)) })}
+            />
+          </Field>
+
           {/* สถานี */}
           <Field label="ชื่อสถานีบริการ" required error={errors.stationId?.message} className="col-span-2 md:col-span-1">
             <Select
@@ -194,25 +213,6 @@ export function RefuelForm({ stations, editing, onSaved, onCancelEdit }: Props) 
               className="tabular border-primary/20 bg-primary/5 font-semibold text-primary"
               placeholder="คำนวณอัตโนมัติ"
               value={liters === null ? "" : formatNumber(liters, 2)}
-            />
-          </Field>
-
-          {/* เลขไมล์ */}
-          <Field
-            label="เลขไมล์รถ (กม.)"
-            hint="ใส่ไว้เพื่อให้ระบบคำนวณอัตราสิ้นเปลืองได้"
-            error={errors.odometer?.message}
-            className="col-span-2 md:col-span-1"
-          >
-            <Input
-              type="number"
-              step="0.01"
-              min="0"
-              inputMode="decimal"
-              placeholder="เช่น 45230"
-              className="tabular"
-              aria-invalid={!!errors.odometer}
-              {...register("odometer", { setValueAs: (v) => (v === "" ? null : Number(v)) })}
             />
           </Field>
 
